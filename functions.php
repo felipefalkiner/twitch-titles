@@ -23,4 +23,31 @@ function getUserTokens($code) {
 
 function getChannelInformation($accessToken){
     
+    $clientId = TWITCH_CLIENT_ID;
+	
+	$url = "https://api.twitch.tv/helix/users";
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Client-ID: $clientId","Authorization: Bearer $accessToken"));
+	curl_setopt($ch, CURLOPT_URL, $url);
+	$result = curl_exec($ch);
+	$array = json_decode($result, true);
+	return $array;
+}
+
+function returnChannelData($broadcasterId, $accessToken) {
+
+    $clientId = TWITCH_CLIENT_ID;
+	
+	$url = "https://api.twitch.tv/helix/channels?broadcaster_id=$broadcasterId";
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Client-ID: $clientId","Authorization: Bearer $accessToken"));
+	curl_setopt($ch, CURLOPT_URL, $url);
+	$result = curl_exec($ch);
+	$array = json_decode($result, true);
+	return $array;
+
 }
