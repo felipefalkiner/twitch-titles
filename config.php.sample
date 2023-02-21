@@ -1,7 +1,17 @@
 <?php
+    // TWITCH API CONFIG
     define("TWITCH_CLIENT_ID", "twich-api-client-id");
     define("TWITCH_CLIENT_SECRET", "twich-api-client-secret");
     define("TWITCH_REDIRECT_URI", "http://localhost/twitch-auth");
     $twitch_scopes = ["channel:manage:broadcast", "channel:read:vips"];
     define("TWITCH_SCOPES", str_replace(":", "%3A", implode("+", $twitch_scopes)));
+
+        // DATABASE CONFIG
+        define("MYSQL_HOST", "DATABASE_IP");
+        define("MYSQL_USER", "DATABASE_USER");
+        define("MYSQL_PASSWORD", "DATABASE_PASSWORD");
+        define("MYSQL_DATABASE", "DATABASE_NAME");
+        date_default_timezone_set('America/Lima');
+    
+        
     
