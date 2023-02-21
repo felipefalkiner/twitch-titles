@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
     <?php
         require_once 'functions.php';
         require_once 'database.php';
@@ -42,13 +43,19 @@
             die();
         }
 
+        startTable();
+        createTableRow3("Channel Name", "Stream Title", "Control");
+
         foreach($array['data'] as $user) {
             $userId = $user['user_id'];
             $apiTitle = $user['title'];
             $username = $user['user_name'];
-
+            $editUrl = createEditButton($userId);
             compareTitles($userId, $apiTitle);
+            createTableRow3($username, $apiTitle, $editUrl);
         }
+
+        stopTable();
 
     ?>
 </body>

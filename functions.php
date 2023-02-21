@@ -171,3 +171,7 @@ function stopTable(){
 	echo "</tbody>";
 	echo "</table>";
 }
+
+function createEditButton($userId) {
+	return "<a href='edit-title.php?userId=$userId'>Edit</a>";
+}
