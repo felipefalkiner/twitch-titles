@@ -1,3 +1,21 @@
 body {
     text-align:center;
 }
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: auto;
+}
+
+.matchBox{
+    width: 600px;
+    margin-left:auto;
+    margin-right:auto;
+    border: 3px solid #000000;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-bottom:10px;
+    padding-bottom: 15px;
+}
