@@ -153,3 +153,21 @@ function compareTitles($userId, $apiTitle) {
 		mysqli_query($connect, $queryUpdateTitle);
 	}
 }
+
+function startTable(){
+	echo "<table border='1'>";
+	echo "<tbody>";
+}
+
+function createTableRow3($field1, $field2, $field3) {
+	echo "<tr>";
+	echo "<td>$field1</td>";
+	echo "<td>$field2</td>";
+	echo "<td>$field3</td>";
+	echo "</tr>";
+}
+
+function stopTable(){
+	echo "</tbody>";
+	echo "</table>";
+}
