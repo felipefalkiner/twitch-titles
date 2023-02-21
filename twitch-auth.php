@@ -4,6 +4,12 @@
     require_once "functions.php";
 
     $code = isset($_GET['code']) ? $_GET['code'] : error();
+    $debug = DEBUG_STATUS;
+
+    if($debug == 1){
+        echo "DEBUG MODE ACTIVE!";
+        die();
+    }
 
     // TO-DOS [COMPLETED]
     // [X] POST -> https://id.twitch.tv/oauth2/token -> get user access token and refresh token

@@ -175,3 +175,43 @@ function stopTable(){
 function createEditButton($userId) {
 	return "<a href='edit-title.php?userId=$userId'>Edit</a>";
 }
+
+function getUserTokensFromDb($userId) {
+	global $connect;
+
+	$query = "SELECT `access_token`, `refresh_token` FROM `twitch-titles` where `user_id` = '$userId';";
+	$query = mysqli_query($connect, $query);
+	$result = mysqli_fetch_array($query);
+	return $result;
+}
+
+function updateTitle($userId, $token, $title) {
+
+    $clientId = TWITCH_CLIENT_ID;
+    $clientSecret = TWITCH_CLIENT_SECRET;
+    $redirectUri = TWITCH_REDIRECT_URI;
+
+	$data = ['title' => $title];
+
+	// echo $bodyData;
+
+	$url = "https://api.twitch.tv/helix/channels?broadcaster_id=$userId";
+	$ch = curl_init( $url );
+	curl_setopt($ch, CURLOPT_VERBOSE, true);
+
+	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt( $ch, CURLOPT_POST, 1);
+	curl_setopt( $ch, CURLOPT_HTTPHEADER, array("Client-ID: $clientId","Authorization: Bearer $token","Content-Type: application/json"));
+	curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+	curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode($data));
+	
+	$streamVerboseHandle = fopen('log.txt', 'w+');
+	curl_setopt($ch, CURLOPT_STDERR, $streamVerboseHandle);
+
+	$response = curl_exec( $ch );
+	$response = json_decode($response, true);
+	$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	curl_close($ch);
+
+	return $httpcode;
+}

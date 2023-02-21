@@ -6,12 +6,13 @@
     $twitch_scopes = ["channel:manage:broadcast", "channel:read:vips"];
     define("TWITCH_SCOPES", str_replace(":", "%3A", implode("+", $twitch_scopes)));
 
-        // DATABASE CONFIG
-        define("MYSQL_HOST", "DATABASE_IP");
-        define("MYSQL_USER", "DATABASE_USER");
-        define("MYSQL_PASSWORD", "DATABASE_PASSWORD");
-        define("MYSQL_DATABASE", "DATABASE_NAME");
-        date_default_timezone_set('America/Lima');
+    // DATABASE CONFIG
+    define("MYSQL_HOST", "DATABASE_IP");
+    define("MYSQL_USER", "DATABASE_USER");
+    define("MYSQL_PASSWORD", "DATABASE_PASSWORD");
+    define("MYSQL_DATABASE", "DATABASE_NAME");
+    date_default_timezone_set('America/Lima');
     
-        
+    // DEBUG CONFIG
+    define("DEBUG_STATUS", 0);
     
