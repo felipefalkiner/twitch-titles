@@ -2,6 +2,13 @@
 
 require_once 'config.php';
 
+function error(){
+    echo "Something went wrong, try again :(<br>";
+    echo "<a href='index.php'>Return</a>";
+    die();
+}
+
+
 function getUserTokens($code) {
 
     $clientId = TWITCH_CLIENT_ID;
@@ -36,11 +43,11 @@ function getChannelInformation($accessToken){
 	return $array;
 }
 
-function returnChannelData($broadcasterId, $accessToken) {
+function returnChannelData($userId, $accessToken) {
 
     $clientId = TWITCH_CLIENT_ID;
 	
-	$url = "https://api.twitch.tv/helix/channels?broadcaster_id=$broadcasterId";
+	$url = "https://api.twitch.tv/helix/channels?broadcaster_id=$userId";
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -49,5 +56,19 @@ function returnChannelData($broadcasterId, $accessToken) {
 	$result = curl_exec($ch);
 	$array = json_decode($result, true);
 	return $array;
+
+}
+
+function checkIfChannelAlreadyExists($userId){
+    global $connect;
+
+    $query = "SELECT 1 from `twitch-titles` where user_id = '$userId'";
+    $query = mysqli_query($connect, $query);
+    $query = mysqli_fetch_array($query);
+
+    if(is_null($query))
+        return false;
+    else
+        return true;
 
 }
