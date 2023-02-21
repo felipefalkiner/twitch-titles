@@ -1,0 +1,7 @@
+<?php
+    define("TWITCH_CLIENT_ID", "twich-api-client-id");
+    define("TWITCH_CLIENT_SECRET", "twich-api-client-secret");
+    define("TWITCH_REDIRECT_URI", "http://localhost/twitch-auth");
+    $twitch_scopes = ["channel:manage:broadcast", "channel:read:vips"];
+    define("TWITCH_SCOPES", str_replace(":", "%3A", implode("+", $twitch_scopes)));
+    
