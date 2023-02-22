@@ -11,6 +11,14 @@
     $accessToken = $tokens['access_token'];
     $refreshToken = $tokens['refresh_token'];
 
+    if(!validateUserToken($accessToken, $refreshToken)){
+        $tokens = getUserTokensFromDb($userId);
+        $accessToken = $tokens['access_token'];
+        $refreshToken = $tokens['refresh_token'];
+        echo "Token invalido - gerando novos";
+    } else 
+        echo "Token valido!";
+
     $response = updateTitle($userId, $accessToken, $title);
 
     if($response == 204)

@@ -106,7 +106,7 @@ function newToken() {
 
 function testToken($token) {
 	
-	global $client_id;
+	$clientId = TWITCH_CLIENT_ID;
 	
 	$testChannel = "gaules";
 	
@@ -114,7 +114,7 @@ function testToken($token) {
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Client-ID: $client_id","Authorization: Bearer $token"));
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Client-ID: $clientId","Authorization: Bearer $token"));
 	curl_setopt($ch, CURLOPT_URL, $url);
 	$result = curl_exec($ch);
 	$array = json_decode($result, true);
@@ -197,7 +197,7 @@ function updateTitle($userId, $token, $title) {
 
 	$url = "https://api.twitch.tv/helix/channels?broadcaster_id=$userId";
 	$ch = curl_init( $url );
-	curl_setopt($ch, CURLOPT_VERBOSE, true);
+	
 
 	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt( $ch, CURLOPT_POST, 1);
@@ -205,8 +205,10 @@ function updateTitle($userId, $token, $title) {
 	curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
 	curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode($data));
 	
-	$streamVerboseHandle = fopen('log.txt', 'w+');
-	curl_setopt($ch, CURLOPT_STDERR, $streamVerboseHandle);
+	// debug curl
+	// curl_setopt($ch, CURLOPT_VERBOSE, true);
+	// $streamVerboseHandle = fopen('log.txt', 'w+');
+	// curl_setopt($ch, CURLOPT_STDERR, $streamVerboseHandle);
 
 	$response = curl_exec( $ch );
 	$response = json_decode($response, true);
@@ -214,4 +216,51 @@ function updateTitle($userId, $token, $title) {
 	curl_close($ch);
 
 	return $httpcode;
+}
+
+function validateUserToken($accessToken, $refreshToken) {
+	
+	global $connect;
+	$clientId = TWITCH_CLIENT_ID;
+	$clientSecret = TWITCH_CLIENT_SECRET;
+    $redirectUri = TWITCH_REDIRECT_URI;
+	
+	$url = "https://api.twitch.tv/helix/users";
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Client-ID: $clientId","Authorization: Bearer $accessToken"));
+	curl_setopt($ch, CURLOPT_URL, $url);
+	$result = curl_exec($ch);
+	$httpcode1 = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	curl_close($ch);
+
+	if ($httpcode1 == 401){
+		$url = "https://id.twitch.tv/oauth2/token";
+		$ch = curl_init( $url );
+		curl_setopt( $ch, CURLOPT_POST, 1);
+		curl_setopt( $ch, CURLOPT_POSTFIELDS, "grant_type=refresh_token&refresh_token=$refreshToken&client_id=$clientId&client_secret=$clientSecret");
+		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt( $ch, CURLOPT_HEADER, 0);
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
+		$response = curl_exec( $ch );
+		$response = json_decode($response, true);
+		$httpcode2 = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		if ($httpcode2 == 200) {
+			$accessTokenOld = $accessToken;
+			$accessToken = $response['access_token'];
+			$refreshToken = $response['refresh_token'];
+			$query = "UPDATE `twitch-titles` SET `access_token` = '$accessToken', `refresh_token` = '$refreshToken' WHERE `twitch-titles`.`access_token` = '$accessTokenOld';";
+			mysqli_query($connect, $query);
+			return false;
+		} else {
+			echo "Something is wrong if this user refresh_key. Delete it and authorize it again.";
+			// TO-DO Delete user in case this happens
+		}
+		
+	}
+
+	return true;
+
 }
