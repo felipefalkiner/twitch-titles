@@ -51,9 +51,10 @@
             $userId = $user['user_id'];
             $apiTitle = $user['title'];
             $username = $user['user_name'];
+            $userLink = "<a href='https://twitch.tv/$username'>$username</a>";
             $editUrl = createEditButton($userId);
             compareTitles($userId, $apiTitle);
-            createTableRow3($username, $apiTitle, $editUrl);
+            createTableRow3($userLink, $apiTitle, $editUrl);
         }
 
         stopTable();
