@@ -40,7 +40,7 @@
         // var_dump($array);
 
         if(count($array['data']) == 0) {
-            echo "No channels live!";
+            echo "<h2>No channels live!</h2>";
             die();
         }
 
