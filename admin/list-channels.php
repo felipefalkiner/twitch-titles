@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-
+<h1>List of Registered Online Channels</h1>
+<h2>(It may takes sometime to update<br>the title here, this is Twitch API's cache!)</h2>
     <?php
         require_once 'functions.php';
         require_once 'database.php';
