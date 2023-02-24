@@ -21,8 +21,9 @@
 
     $response = updateTitle($userId, $accessToken, $title);
 
-    if($response == 204)
+    if($response == 204){
         header('Location: list-channels.php');
-    else
+        compareTitles($userId, $title);
+    } else
         error();
 ?>

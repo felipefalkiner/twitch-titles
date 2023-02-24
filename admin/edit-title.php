@@ -10,14 +10,15 @@
 <body>
     <h1>Edit Stream Title</h1>
 <?php
-    $userId = isset($_GET['userId']) ? $_GET['userId'] : '';
+    $userLogin = isset($_GET['userLogin']) ? $_GET['userLogin'] : '';
+    $online = isset($_GET['online']) ? filter_var($_GET['online'], FILTER_VALIDATE_BOOLEAN) : '';
     require_once 'functions.php';
     require_once 'database.php';
     $connect = Database::createConnection();
-    if($userId == '')
+    if($userLogin == '')
         error();
     else
-        $query = "SELECT * FROM `twitch-titles` WHERE `user_id` = '$userId'";
+        $query = "SELECT * FROM `twitch-titles` WHERE `user_login` = '$userLogin'";
     
     $doQuery = mysqli_query($connect, $query);
     $result = mysqli_fetch_array($doQuery);
@@ -32,9 +33,15 @@
     <?php
         echo "<p>User: $userLogin</p>";
         echo "<span>User ID:</span> <input name='user_id' type='text' value='$userId' readonly><br><br>";
-        echo "<span>Title:</span> <br> <input name='title' type='text' maxlength='140' size='140' value='$title'><br><br>";
+        echo "<span>Title:</span> <br>";
+        echo "<input name='title' type='text' maxlength='140' size='140' value='$title'><br>";
+        
+        if($online == false)
+            echo "Couldn't retreive title from Twitch, the information above may not be the current Channel Title!";
+        
+        echo "<br><br>";
     ?>
-
+    
     <input type="submit" value="Save Match">
 </form>
 </div>

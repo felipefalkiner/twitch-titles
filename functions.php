@@ -77,11 +77,24 @@ function returnChannelList()
 {
     global $connect;
 
-    $query = "SELECT user_id FROM `twitch-titles`";
+    $query = "SELECT user_login FROM `twitch-titles`";
     $doQuerySQL = mysqli_query($connect, $query) or die(mysqli_error($connect));
     $rows = array();
     while ($r = mysqli_fetch_assoc($doQuerySQL)) {
         $rows[] = $r;
+    }
+    return $rows;
+}
+
+function returnChannelList2()
+{
+    global $connect;
+
+    $query = "SELECT user_login FROM `twitch-titles`";
+    $doQuerySQL = mysqli_query($connect, $query) or die(mysqli_error($connect));
+    $rows = array();
+    while ($r = mysqli_fetch_assoc($doQuerySQL)) {
+        $rows[] = $r['user_login'];
     }
     return $rows;
 }
@@ -155,6 +168,21 @@ function compareTitles($userId, $apiTitle) {
 	}
 }
 
+function compareTitlesByUserLogin($userLogin, $apiTitle) {
+
+	global $connect;
+
+	$query = "SELECT `title` FROM `twitch-titles` where `user_login` = '$userLogin';";
+	$query = mysqli_query($connect, $query);
+	$result = mysqli_fetch_array($query);
+	$dbTitle = $result['title'];
+
+	if ($apiTitle != $dbTitle) {
+		$queryUpdateTitle = "UPDATE `twitch-titles` SET `title` = '$apiTitle' WHERE `twitch-titles`.`user_login` = '$userLogin';";
+		mysqli_query($connect, $queryUpdateTitle);
+	}
+}
+
 function startTable(){
 	echo "<table border='1'>";
 	echo "<tbody>";
@@ -173,8 +201,11 @@ function stopTable(){
 	echo "</table>";
 }
 
-function createEditButton($userId) {
-	return "<a href='edit-title.php?userId=$userId'>Edit</a>";
+function createEditButton($userLogin, $online) {
+	if($online)
+		return "<a href='edit-title.php?userLogin=$userLogin&online=true'>Edit</a>";
+	else
+		return "<a href='edit-title.php?userLogin=$userLogin&online=false'>Edit</a>";
 }
 
 function getUserTokensFromDb($userId) {
