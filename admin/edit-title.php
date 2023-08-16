@@ -42,7 +42,7 @@
         echo "<br><br>";
     ?>
     
-    <input type="submit" value="Save Match">
+    <input type="submit" value="Change Title">
 </form>
 </div>
 
