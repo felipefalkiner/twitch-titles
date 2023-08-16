@@ -25,14 +25,23 @@ This application will ask to connect to your Twitch Account and by doing this it
  4. Rename *config.php.sample* to *config.php*
  5. Edit *config.php* with all the info needed, it's self-explanatory, but in case you need:
 > TWITCH_CLIENT_ID = The Twitch Application's Client ID
+> 
 > TWITCH_CLIENT_SECRET = The Twitch Application's Client Secret
+> 
 > TWITCH_REDIRECT_URI = The OAuth Redirect you've defined in step 2
-> $twitch_scopes = You don't need to change those, just in case you needed, the channel:read:vips scope is there just for testing purposes 
+> 
+> $twitch_scopes = You don't need to change those, just in case you needed, the channel:read:vips scope is there just for testing purposes
+> 
 > MYSQL_HOST = The IP for your MySQL Instance
+>
 > MYSQL_USER = The user of your MySQL Instance
+> 
 > MYSQL_PASSWORD = The user password of your MySQL Instance
+> 
 > MYSQL_DATABASE = Unless you renamed the database after the import, this must be "twitch-titles"
+> 
 > date_default_timezone_set = You can use the default or anyone from here: https://www.php.net/manual/en/timezones.php
+> 
 > DEBUG CONFIG = If you want to activate the Debug mode just set the value to 1
 
 Everything should be working now! :)
