@@ -146,7 +146,7 @@ function returnServerToken(){
 	if (!testToken($token)){
 		$token = newToken();
 		$queryUpdateToken = "UPDATE `twitch-credentials` SET `token` = '$token' WHERE `twitch-credentials`.`id` = 1;";
-		echo $queryUpdateToken;
+		// echo $queryUpdateToken;
 		mysqli_query($connect, $queryUpdateToken);
 	}
 
