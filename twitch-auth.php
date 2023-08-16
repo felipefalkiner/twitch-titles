@@ -8,6 +8,7 @@
 
     if($debug == 1){
         echo "DEBUG MODE ACTIVE!";
+        echo "CODE: $code";
         die();
     }
 
